@@ -1,0 +1,153 @@
+{% extends 'base_layout.html' %}
+{% load static %}
+{% block content %}
+<!-- Animated -->
+<div class="animated fadeIn">
+    <!-- Widgets  -->
+    <div class="row">
+        <div class="col-lg-4 col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <div class="stat-widget-five">
+                        <div class="stat-icon dib flat-color-3">
+                            <i class="pe-7s-folder"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="text-left dib">
+                                <div class="stat-text"><span class="count">{{repositories.0.count}}</span>
+                                </div>
+                                <div class="stat-heading">Total de Repositórios</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <div class="stat-widget-five">
+                        <div class="stat-icon dib flat-color-5">
+                            <i class="pe-7s-unlock"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="text-left dib">
+                                <div class="stat-text"><span class="count">{{repositories.1.count}}</span></div>
+                                <div class="stat-heading">Repositórios Abertos</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <div class="stat-widget-five">
+                        <div class="stat-icon dib flat-color-4">
+                            <i class="pe-7s-lock"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="text-left dib">
+                                <div class="stat-text"><span class="count">{{repositories.2.count}}</span></div>
+                                <div class="stat-heading">Repositórios Fechados</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Widgets -->
+    <!-- Card body -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="box-title">Repositórios</h4>
+                </div>
+                <div class="card-body">
+                    <!-- Tabs -->
+                    <div class="custom-tab">
+
+                        <nav>
+                            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                <a class="nav-item nav-link active" id="custom-nav-all-tab" data-toggle="tab"
+                                    href="#custom-nav-all" role="tab" aria-controls="custom-nav-all"
+                                    aria-selected="true">Todos Repositórios</a>
+                                <a class="nav-item nav-link" id="custom-nav-open-tab" data-toggle="tab"
+                                    href="#custom-nav-open" role="tab" aria-controls="custom-nav-open"
+                                    aria-selected="false">Repositórios Abertos</a>
+                                <a class="nav-item nav-link" id="custom-nav-private-tab" data-toggle="tab"
+                                    href="#custom-nav-private" role="tab" aria-controls="custom-nav-private"
+                                    aria-selected="false">Repositórios Privados</a>
+                            </div>
+                        </nav>
+                        <div class="tab-content pl-3 pt-2" id="nav-tabContent">
+                            {% for repository in repositories %}
+
+                            <div class="tab-pane fade {% if repository.name == 'all' %}show active {% endif %}"
+                                id="custom-nav-{{repository.name}}" role="tabpanel"
+                                aria-labelledby="custom-nav-{{repository.name}}-tab">
+
+                                <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                        </div>
+                                        <input type="text" id="input_{{repository.name}}" onkeyup="searchTag('input_{{repository.name}}', 'tab_{{repository.name}}')"
+                                            type="text" class="form-control" placeholder="Buscar por Tag">
+                                        <span class="input-group-text" id="basic-addon1"><i class="fa fa-search"></i></span>
+                                    </div>
+                                <!-- Tables -->
+                                <table id="tab_{{repository.name}}" class="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col" style="width: 5%">#</th>
+                                            <th scope="col" style="width: 35%">Nome</th>
+                                            <th scope="col" style="width: 30%">Tags</th>
+                                            <th class="text-center" scope="col" style="width: 15%">Editar Tags</th>
+                                            <th class="text-center" scope="col" style="width: 15%">URL</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for repo in repository.repositories %}
+                                        <tr>
+                                            <th scope="row">{{ forloop.counter }}</th>
+                                            <td>{{repo.name}}</td>
+                                            <td class="text-left">
+                                                    {% for tag in repo.topics  %}
+                                                    <span class="badge badge-secondary">{{tag}}</span>
+                                                    {% endfor %}
+                                            </td>
+                                            <td class="text-center"><a href="{% url 'edit_tag' repo.name%}"><i
+                                                        class="fa fa-pencil"></i></a></td>
+                                            <td class="text-center"><a href="{{repo.html_url}}">Ver repositório</a></td>
+                                            {% empty %}
+                                            <td colspan="4">Usuário não possui repositórios.</td>
+                                            {% endfor %}
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <!-- /Tables -->
+                            </div>
+
+                            {% endfor %}
+                        </div>
+
+                    </div>
+                    <!-- /Tabs -->
+                </div>
+            </div>
+        </div><!-- /# column -->
+    </div>
+    <!-- /Card body -->
+    <div class="clearfix"></div>
+</div>
+<!-- .animated -->
+{% endblock %}
+
+
+{% block js %}
+<script src="{% static 'custom_js/search_tag.js' %}"></script>
+{% endblock %}
+
