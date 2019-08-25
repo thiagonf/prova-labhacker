@@ -55,6 +55,11 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'core.urls'
 
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'social_core.backends.github.GithubOAuth2',  # for Github authentication
+)
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -122,3 +127,16 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+
+LOGIN_URL = 'home'
+LOGIN_REDIRECT_URL = 'home'
+
+# Configuration from social_django
+SOCIAL_AUTH_GITHUB_KEY = '63657f726f24c43ea683'
+SOCIAL_AUTH_GITHUB_SECRET = 'e1d4eff527567d3073fccb4c84c832f8669e4afc'
+SOCIAL_AUTH_GITHUB_SCOPE = ['repo']
