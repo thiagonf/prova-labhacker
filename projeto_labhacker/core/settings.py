@@ -56,7 +56,7 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'core.urls'
 
 AUTHENTICATION_BACKENDS = (
-    'django.contrib.auth.backends.ModelBackend',
+    # 'django.contrib.auth.backends.ModelBackend', # for model user Django
     'social_core.backends.github.GithubOAuth2',  # for Github authentication
 )
 

@@ -2,6 +2,7 @@ from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.staticfiles.templatetags.staticfiles import static
 import requests
+from django.core.exceptions import ObjectDoesNotExist
 from dashboard.endpoints_github import URL_REPOSITORIES_USER, URL_INFO_USER, \
                                         HEADERS_REPOSITORY_TOPIC
 
@@ -64,8 +65,11 @@ class DashboardView(LoginRequiredMixin, TemplateView):
 
     def _get_token_user(self):
         user = self.request.user
-        social = user.social_auth.get(provider='github')
-        token = social.extra_data['access_token']
+        try:
+            social = user.social_auth.get(provider='github')
+            token = social.extra_data['access_token']
+        except ObjectDoesNotExist:
+            token = ''
         return token
 
     def _get_open_repositories(self, all_repositories):
